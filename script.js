@@ -21,9 +21,9 @@ navigator.mediaDevices.getUserMedia({ audio: true })
             let average = sum / bufferLength;
 
             // Wiggle the flame based on microphone input
-            if (average > 50) { // Adjust sensitivity for wiggling
+            if (average > 43) { // Adjust sensitivity for wiggling
                 const blowIntensity = Math.min(average / 150, 1); // Normalize to 0-1 range
-                const wiggleX = (Math.random() - 0.5) * 40 * blowIntensity; // Adjust for max wiggle amount
+                const wiggleX = (Math.random() - 0.5) * 60 * blowIntensity; // Adjust for max wiggle amount
                 const wiggleY = (Math.random() - 0.5) * 25 * blowIntensity;
                 const scale = 1 - blowIntensity * 0.2; // Reduce size slightly when blowing
 
@@ -35,7 +35,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
             }
 
             // Detect strong, sustained blow for extinguishing
-            if (average > 40 && !isBlownOut) {
+            if (average > 30 && !isBlownOut) {
                 if (!blowStart) {
                     blowStart = Date.now();
                 } else if (Date.now() - blowStart > 500) {
