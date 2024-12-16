@@ -35,7 +35,7 @@ navigator.mediaDevices.getUserMedia({ audio: true })
             }
 
             // Detect strong, sustained blow for extinguishing
-            if (average > 80 && !isBlownOut) {
+            if (average > 40 && !isBlownOut) {
                 if (!blowStart) {
                     blowStart = Date.now();
                 } else if (Date.now() - blowStart > 500) {
