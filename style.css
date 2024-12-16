@@ -1,0 +1,200 @@
+@import url('https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&display=swap');
+
+body {
+    background-color: #0d0d1f; /* Even darker background */
+    color: #eee;
+    font-family: 'Arial', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    perspective: 800px; /* For 3D effect */
+}
+
+.message {
+    font-family: 'Tangerine', cursive;
+    font-size: 4em;
+    color: #74a3ff; /* Muted blue */
+    margin-bottom: 80px; /* More space */
+    text-shadow: 0 0 15px #74a3ff;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards;
+}
+
+/* Candle Styling */
+.candle {
+    position: relative;
+    width: 90px;
+    height: 250px;
+    transform-style: preserve-3d; /* Enable 3D transforms */
+    transform: rotateX(-15deg); /* Tilt the candle slightly */
+}
+
+.flame-container {
+    position: absolute;
+    top: -50px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 70px;
+}
+
+/* Realistic Flame */
+.flame {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50px;
+    height: 70px;
+    background: linear-gradient(to top, #ff9800, #ffeb3b, #ff5722);
+    border-radius: 50% 50% 20% 20% / 60% 60% 40% 40%;
+    box-shadow: 
+        0 0 15px 5px rgba(255, 152, 0, 0.9),
+        0 0 30px 10px rgba(255, 152, 0, 0.7),
+        0 0 50px 15px rgba(255, 152, 0, 0.5),
+        inset 0 0 20px rgba(255, 152, 0, 0.8); /* Inner glow */
+    animation: flicker 0.5s infinite ease-in-out alternate;
+    z-index: 2; /* Ensure flame is above sparkles */
+}
+
+/* Sparkles (Subtle Effect) */
+.sparkles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1; /* Behind the main flame */
+}
+
+.sparkles::before,
+.sparkles::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background-color: #ffc107;
+    opacity: 0.8;
+    animation: sparkle 2s infinite alternate;
+}
+
+.sparkles::before {
+    top: 20%;
+    left: 30%;
+    animation-delay: 0.5s;
+}
+
+.sparkles::after {
+    top: 60%;
+    right: 25%;
+    animation-delay: 1s;
+}
+
+/* Wick */
+.wick {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 5px;
+    height: 12px;
+    background-color: #111;
+    border-radius: 2px;
+}
+
+/* Wax */
+.wax {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, #2962ff, #42a5f5, #64b5f6);
+    border-radius: 8px;
+    overflow: hidden; /* For wax drip */
+}
+
+/* Wax Drip */
+.drip {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 15px;
+    height: 35px;
+    background: linear-gradient(to bottom, #42a5f5, #64b5f6);
+    border-radius: 50%;
+    filter: blur(2px); /* Soften the drip */
+}
+
+/* Animations */
+@keyframes flicker {
+    0% {
+        transform: translateX(-50%) scale(1, 1) rotate(-1deg);
+        height: 65px;
+        box-shadow: 
+            0 0 15px 5px rgba(255, 152, 0, 0.9),
+            0 0 30px 10px rgba(255, 152, 0, 0.7),
+            0 0 50px 15px rgba(255, 152, 0, 0.5),
+            inset 0 0 20px rgba(255, 152, 0, 0.8);
+    }
+    50% {
+        transform: translateX(-52%) scale(1.05, 0.95) rotate(2deg);
+        height: 70px;
+        box-shadow: 
+            0 0 20px 5px rgba(255, 152, 0, 1),
+            0 0 40px 10px rgba(255, 152, 0, 0.8),
+            0 0 60px 20px rgba(255, 152, 0, 0.6),
+            inset 0 0 25px rgba(255, 152, 0, 0.9);
+    }
+    100% {
+        transform: translateX(-50%) scale(1, 1) rotate(-2deg);
+        height: 68px;
+        box-shadow: 
+            0 0 15px 5px rgba(255, 152, 0, 0.9),
+            0 0 30px 10px rgba(255, 152, 0, 0.7),
+            0 0 50px 15px rgba(255, 152, 0, 0.5),
+            inset 0 0 20px rgba(255, 152, 0, 0.8);
+    }
+}
+
+@keyframes sparkle {
+    0% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.5);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.info {
+    margin-top: 20px;
+    color: #74a3ff;
+    font-size: 1.2em;
+    opacity: 0;
+    animation: fadeIn 2s ease forwards;
+    animation-delay: 1s; /* Delay the appearance */
+}
