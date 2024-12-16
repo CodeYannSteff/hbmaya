@@ -36,7 +36,77 @@ body {
     width: 100%;
     height: 100%;
     z-index: -1;
-    overflow: hidden; /* Prevent stars from overflowing */
+}
+
+.math-symbols {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.math-symbol {
+    position: absolute;
+    color: rgba(0, 123, 255, 0.3); /* Light blue with transparency */
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.5em;
+    animation: floatSymbol 25s linear infinite;
+    pointer-events: none; /* Make symbols non-interactive */
+    text-shadow: 0 0 10px rgba(0, 123, 255, 0.5); /* Add glow effect */
+}
+
+@keyframes floatSymbol {
+    0% {
+        opacity: 0;
+        transform: translateY(100vh); /* Start below the viewport */
+    }
+    25% {
+        opacity: 0.8;
+    }
+    75% {
+        opacity: 0.8;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100vh); /* Move upwards */
+    }
+}
+
+.shooting-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.shooting-star {
+    position: absolute;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.8), transparent);
+    width: 150px; /* Adjust length as needed */
+    height: 1px; /* Thin star trail */
+    border-radius: 2px;
+    animation: shoot 5s linear infinite;
+}
+
+@keyframes shoot {
+    0% {
+        opacity: 0;
+        transform: translateX(0) translateY(0) rotate(45deg);
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(300px) translateY(300px) rotate(45deg);
+    }
 }
 
 .stars {
@@ -45,6 +115,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    pointer-events: none;
 }
 
 .star {
@@ -107,6 +178,23 @@ body {
     }
 }
 
+.header-underline {
+    width: 0;
+    height: 2px;
+    background-color: #fff;
+    margin: 10px auto 0;
+    animation: drawLine 4s linear forwards;
+}
+
+@keyframes drawLine {
+    from {
+        width: 0;
+    }
+    to {
+        width: 80%;
+    }
+}
+
 /* --- Content --- */
 .content {
     position: relative;
@@ -128,32 +216,74 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    opacity: 0; /* Initially hidden */
-    animation: fadeIn 1s ease forwards 1s; /* Fade in after 1 second */
 }
 
-@keyframes fadeIn {
+.line-art-container {
+    position: relative;
+    width: 250px; /* Fixed width */
+    height: 250px; /* Fixed height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Floating animation */
+@keyframes float {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.line-art {
+    max-width: 100%;
+    max-height: 100%;
+    filter: drop-shadow(0 0 20px #007bff) brightness(1.2);
+    animation: revealLineArt 3s linear forwards;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+}
+
+.line-art::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 50% 50%, rgba(0, 123, 255, 0.6) 0%, transparent 70%);
+    opacity: 0;
+    z-index: 1;
+    animation: pulse 3s ease-out infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes revealLineArt {
     0% {
         opacity: 0;
     }
     100% {
         opacity: 1;
     }
-}
-
-.line-art-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.line-art {
-    max-width: 80%;
-    max-height: 80%;
-    filter: drop-shadow(0 0 20px #007bff) brightness(1.2);
 }
 
 /* --- Message Section --- */
@@ -164,8 +294,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    opacity: 0; /* Initially hidden */
-    animation: fadeIn 1s ease forwards 3s; /* Fade in after line art animation */
+    padding: 20px;
 }
 
 .message-container {
@@ -175,6 +304,20 @@ body {
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
     width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    animation: revealMessageContainer 1s ease forwards 3s; /* Delay until line art is drawn */
+}
+
+@keyframes revealMessageContainer {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .message-text {
@@ -183,10 +326,28 @@ body {
     color: #fff;
     text-align: center;
     line-height: 1.5;
-    animation: revealMessage 4s ease forwards; /* Word by word reveal */
+    opacity: 0;
+    animation: revealMessageText 4s ease forwards; /* Delay until container is visible */
 }
 
-@keyframes revealMessage {
+.strawberry-icon {
+    width: 30px; /* Adjust size as needed */
+    height: auto;
+    margin-bottom: 10px;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 3.5s; /* Delay until message container is visible */
+}
+
+@keyframes revealMessageText {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
     0% {
         opacity: 0;
     }
@@ -203,8 +364,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    opacity: 0; /* Initially hidden */
-    animation: fadeIn 1s ease forwards 5s; /* Fade in after message reveal */
+    padding: 20px;
 }
 
 .gears-container {
@@ -216,6 +376,8 @@ body {
     align-items: center;
     margin-bottom: 20px;
     z-index: 2;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 5s; /* Delay until after message reveal */
 }
 
 .gear {
@@ -254,10 +416,13 @@ body {
     position: relative;
     width: 90%;
     opacity: 0;
-    animation: tributeType 4s steps(40, end) forwards;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid #007bff; /* Cursor effect */
+    animation: typeText 4s steps(40, end) forwards 6s;
 }
 
-@keyframes tributeType {
+@keyframes typeText {
     0% {
         width: 0;
         opacity: 0;
@@ -277,8 +442,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    opacity: 0; /* Initially hidden */
-    animation: fadeIn 1s ease forwards 7s; /* Fade in after tribute text */
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 8s; /* Delay for previous animations */
 }
 
 .candle {
